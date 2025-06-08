@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NFC Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Fade-in animation for the form card */
+    .fade-in {
+      animation: fadeIn 0.8s ease-out;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Slide-in animation for form elements */
+    .slide-in {
+      animation: slideIn 0.5s ease-out;
+      animation-fill-mode: backwards;
+    }
+    @keyframes slideIn {
+      0% { opacity: 0; transform: translateX(-20px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Button pulse animation */
+    .pulse-button {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .pulse-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Loading spinner */
+    .loading::after {
+      content: '';
+      display: none;
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 3px solid #ffffff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .loading.loading-active::after {
+      display: inline-block;
+    }
+    @keyframes spin {
+      to { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    /* Input focus animation */
+    .input-focus {
+      transition: all 0.3s ease;
+    }
+    .input-focus:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(76, 29, 149, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen">
+  <div class="bg-gray-800 p-8 rounded-lg shadow-xl max-w-md w-full fade-in">
+    <h2 class="text-2xl font-bold text-teal-300 mb-6 text-center slide-in" style="animation-delay: 0.1s;">Enter Your Information</h2>
+    <form id="userForm" class="space-y-4">
+      <div class="slide-in" style="animation-delay: 0.2s;">
+        <label for="name" class="block text-sm font-medium text-gray-300">Name</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter your name"
+          required
+          class="mt-1 w-full px-4 py-2 border border-gray-600 rounded-md bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 input-focus placeholder-gray-400"
+        />
+      </div>
+      <div class="slide-in" style="animation-delay: 0.3s;">
+        <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          required
+          class="mt-1 w-full px-4 py-2 border border-gray-600 rounded-md bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 input-focus placeholder-gray-400"
+        />
+      </div>
+      <button
+        type="submit"
+        class="w-full bg-purple-600 text-white py-2 rounded-md pulse-button relative hover:bg-purple-700"
+        id="submitButton"
+      >
+        Submit & Write to NFC
+      </button>
+    </form>
+  </div>
+  <script>
+    // Add loading state to button on form submission
+    document.getElementById('userForm').addEventListener('submit', function() {
+      const button = document.getElementById('submitButton');
+      button.classList.add('loading-active');
+      button.disabled = true;
+      button.textContent = 'Writing...';
+      // Reset after 2 seconds (adjust based on your NFC write time)
+      setTimeout(() => {
+        button.classList.remove('loading-active');
+        button.disabled = false;
+        button.textContent = 'Submit & Write to NFC';
+      }, 2000);
+    });
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
